@@ -17,10 +17,30 @@ public class Process {
         return pID;
     }
 
-    public ArrayList<Thread> getArrThread(){
-        return arrThread;
+    public int getArrThreadSize(){
+        return arrThread.size();
     }
-
+    
+    public Thread getArrThreadPerID(int id){
+    	return arrThread.get(id);
+    }
+    
+    public Thread removeArrThreadPerID(int id){
+    	return arrThread.remove(id);
+    }
+    
+    public int getArrIDProcessPerID(int id){
+    	return arrThread.get(id).getID();
+    }
+    
+    public int getThreadTime(int id){
+    	return arrThread.get(id).getNecessaryTime();
+    }
+    
+    public boolean ThreadIsEmpty(){
+    	return arrThread.isEmpty();
+    }
+    
     public void createThreads() {
         for (int i = 0; i < 1 + rand.nextInt(10); i++) {
             int nesTime = 1 + rand.nextInt(10);
