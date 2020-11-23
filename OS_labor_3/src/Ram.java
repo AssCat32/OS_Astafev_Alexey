@@ -2,8 +2,13 @@ public class Ram {
 
     private int[] memory;
 
-    public int[] getMemory() {
-        return memory;
+    
+    public int getSize() {
+    	return memory.length;
+    }
+    
+    public int getId(int id) {
+    	return memory[id];
     }
 
     private boolean isFull = false;
