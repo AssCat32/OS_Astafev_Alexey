@@ -6,63 +6,63 @@ public class MemoryManager {
 
     private Ram ram;
 
-    private HDD hdd;
+    private Memory memory;
 
     public MemoryManager(LinkedList<Page> pageList, Ram ram) {
         pageTable = new PageTable(pageList);
         this.ram = ram;
-        hdd = new HDD(ram.getMemory().length * 2);
+        memory = new Memory(ram.getSize() * 2);
     }
 
     public boolean work(int id) {
         int ramIndex = pageTable.getPage(id).getRamId();
         if (ramIndex == -1) {
-            System.out.println("    Сгенерировано страничное прерывание, процесс прерывает работу...");
-            System.out.println("    Диспетчер памяти осуществляет поиск свободного места...");
+            System.out.println("    РЎРіРµРЅРµСЂРёСЂРѕРІР°РЅРѕ СЃС‚СЂР°РЅРёС‡РЅРѕРµ РїСЂРµСЂС‹РІР°РЅРёРµ, РїСЂРѕС†РµСЃСЃ РїСЂРµСЂС‹РІР°РµС‚ СЂР°Р±РѕС‚Сѓ...");
+            System.out.println("    Р”РёСЃРїРµС‚С‡РµСЂ РїР°РјСЏС‚Рё РѕСЃСѓС‰РµСЃС‚РІР»СЏРµС‚ РїРѕРёСЃРє СЃРІРѕР±РѕРґРЅРѕРіРѕ РјРµСЃС‚Р°...");
             if (!ram.getFull()) {
-                for (int i = 0; i < ram.getMemory().length; i++) {
-                    if (ram.getMemory()[i] == -1) {
+                for (int i = 0; i < ram.getSize(); i++) {
+                    if (ram.getId(i) == -1) {
                         insertInRam(ram, i, id);
-                        System.out.println("    Процесс продолжает работу");
+                        System.out.println("    РџСЂРѕС†РµСЃСЃ РїСЂРѕРґРѕР»Р¶Р°РµС‚ СЂР°Р±РѕС‚Сѓ");
                         break;
                     }
                 }
             } else {
-                System.out.println("    В оперативной памяти закончилось свободное место, начинает работать алгоритм замещения страниц");
+                System.out.println("    Р’ РѕРїРµСЂР°С‚РёРІРЅРѕР№ РїР°РјСЏС‚Рё Р·Р°РєРѕРЅС‡РёР»РѕСЃСЊ СЃРІРѕР±РѕРґРЅРѕРµ РјРµСЃС‚Рѕ, РЅР°С‡РёРЅР°РµС‚ СЂР°Р±РѕС‚Р°С‚СЊ Р°Р»РіРѕСЂРёС‚Рј Р·Р°РјРµС‰РµРЅРёСЏ СЃС‚СЂР°РЅРёС†");
                 int minStatus = 5;
-                for (int i = 0; i < ram.getMemory().length; i++) {
-                    if (pageTable.getPage(ram.getMemory()[i]).getStatus() < minStatus) {
-                        minStatus = pageTable.getPage(ram.getMemory()[i]).getStatus();
+                for (int i = 0; i < ram.getSize(); i++) {
+                    if (pageTable.getPage(ram.getId(i)).getStatus() < minStatus) {
+                        minStatus = pageTable.getPage(ram.getId(i)).getStatus();
                     }
                 }
-                for (int i = 0; i < ram.getMemory().length; i++) {
-                    if (pageTable.getPage(ram.getMemory()[i]).getStatus() == minStatus) {
-                        pageTable.getPage(ram.getMemory()[i]).setOnHdd(true);
-                        System.out.println("    Виртуальная страница с id " + ram.getMemory()[i] + " размещенная в физической странице с адресом " + i + " выгружается на жесткий диск");
-                        if(!hdd.insertPage(ram.getMemory()[i])){
+                for (int i = 0; i < ram.getSize(); i++) {
+                    if (pageTable.getPage(ram.getId(i)).getStatus() == minStatus) {
+                        pageTable.getPage(ram.getId(i)).setOnHdd(true);
+                        System.out.println("    Р’РёСЂС‚СѓР°Р»СЊРЅР°СЏ СЃС‚СЂР°РЅРёС†Р° СЃ id " + ram.getId(i) + " СЂР°Р·РјРµС‰РµРЅРЅР°СЏ РІ С„РёР·РёС‡РµСЃРєРѕР№ СЃС‚СЂР°РЅРёС†Рµ СЃ Р°РґСЂРµСЃРѕРј " + i + " РІС‹РіСЂСѓР¶Р°РµС‚СЃСЏ РЅР° Р¶РµСЃС‚РєРёР№ РґРёСЃРє");
+                        if(!memory.insertPage(ram.getId(i))){
                             return false;
                         }
                         insertInRam(ram, i, id);
-                        System.out.println("    Процесс продолжает работу");
+                        System.out.println("    РџСЂРѕС†РµСЃСЃ РїСЂРѕРґРѕР»Р¶Р°РµС‚ СЂР°Р±РѕС‚Сѓ");
                         break;
                     }
                 }
             }
         } else {
             if (pageTable.getPage(id).getOnHdd()) {
-                System.out.println("    Осуществляется подкачка виртуальной страницы с id " + ram.getMemory()[ramIndex]);
-                hdd.freeSpace(ram.getMemory()[ramIndex]);
+                System.out.println("    РћСЃСѓС‰РµСЃС‚РІР»СЏРµС‚СЃСЏ РїРѕРґРєР°С‡РєР° РІРёСЂС‚СѓР°Р»СЊРЅРѕР№ СЃС‚СЂР°РЅРёС†С‹ СЃ id " + ram.getId(ramIndex));
+                memory.freeSpace(ram.getId(ramIndex));
                 int minStatus = 5;
-                for (int i = 0; i < ram.getMemory().length; i++) {
-                    if (pageTable.getPage(ram.getMemory()[i]).getStatus() < minStatus) {
-                        minStatus = pageTable.getPage(ram.getMemory()[i]).getStatus();
+                for (int i = 0; i < ram.getSize(); i++) {
+                    if (pageTable.getPage(ram.getId(i)).getStatus() < minStatus) {
+                        minStatus = pageTable.getPage(ram.getId(i)).getStatus();
                     }
                 }
-                for (int i = 0; i < ram.getMemory().length; i++) {
-                    if (pageTable.getPage(ram.getMemory()[i]).getStatus() == minStatus) {
-                        pageTable.getPage(ram.getMemory()[i]).setOnHdd(true);
-                        System.out.println("    Виртуальная страница с id " + ram.getMemory()[i] + " размещенная в физической странице с адресом " + i + " выгружается на жесткий диск");
-                        if(!hdd.insertPage(ram.getMemory()[i])){
+                for (int i = 0; i < ram.getSize(); i++) {
+                    if (pageTable.getPage(ram.getId(i)).getStatus() == minStatus) {
+                        pageTable.getPage(ram.getId(i)).setOnHdd(true);
+                        System.out.println("    Р’РёСЂС‚СѓР°Р»СЊРЅР°СЏ СЃС‚СЂР°РЅРёС†Р° СЃ id " + ram.getId(i) + " СЂР°Р·РјРµС‰РµРЅРЅР°СЏ РІ С„РёР·РёС‡РµСЃРєРѕР№ СЃС‚СЂР°РЅРёС†Рµ СЃ Р°РґСЂРµСЃРѕРј " + i + " РІС‹РіСЂСѓР¶Р°РµС‚СЃСЏ РЅР° Р¶РµСЃС‚РєРёР№ РґРёСЃРє");
+                        if(!memory.insertPage(ram.getId(i))){
                             return false;
                         }
                         insertInRam(ram, i, id);
@@ -71,13 +71,13 @@ public class MemoryManager {
                 }
             }
         }
-        System.out.println("Обращение к виртуальной странице с id " + id + " прошло успешно\n");
+        System.out.println("РћР±СЂР°С‰РµРЅРёРµ Рє РІРёСЂС‚СѓР°Р»СЊРЅРѕР№ СЃС‚СЂР°РЅРёС†Рµ СЃ id " + id + " РїСЂРѕС€Р»Рѕ СѓСЃРїРµС€РЅРѕ\n");
         return true;
     }
 
     private void insertInRam(Ram ram, int i, int id) {
         ram.insertPage(i, id);
-        System.out.println("    Виртуальная страница с id " + id + " отображена в физическую страницу с адресом " + i);
+        System.out.println("    Р’РёСЂС‚СѓР°Р»СЊРЅР°СЏ СЃС‚СЂР°РЅРёС†Р° СЃ id " + id + " РѕС‚РѕР±СЂР°Р¶РµРЅР° РІ С„РёР·РёС‡РµСЃРєСѓСЋ СЃС‚СЂР°РЅРёС†Сѓ СЃ Р°РґСЂРµСЃРѕРј " + i);
         pageTable.getPage(id).setRamId(i);
         pageTable.getPage(id).setRequest(true);
         pageTable.getPage(id).setOnHdd(false);
@@ -86,6 +86,6 @@ public class MemoryManager {
     }
 
     private void insertInHdd(int id) {
-        hdd.insertPage(id);
+    	memory.insertPage(id);
     }
 }
