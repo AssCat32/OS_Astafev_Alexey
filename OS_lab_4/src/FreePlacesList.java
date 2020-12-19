@@ -1,24 +1,25 @@
-import java.util.ArrayList;
+public class FreePlaceList {
 
-public class FreePlacesList {
+    private int firstFreeCluster = -1;
 
-    private final ArrayList<Integer> clusters;
+    public int searchFreePlace(Disk disk, int size) {
+        int countFree = 0;
 
-    public FreePlacesList(Disk disk) {
-        this.clusters = new ArrayList<>();
         for (int i = 0; i < disk.getCells().length; i++) {
             if (disk.getCells()[i].getCellStatus() == 0) {
-                clusters.add(i);
+                if(size == 0){
+                    return i;
+                }
+                countFree++;
+                if(countFree == size + 1){
+                    firstFreeCluster = i - size;
+                    break;
+                }
+            }
+            if(disk.getCells()[i].getCellStatus() != 0){
+                countFree = 0;
             }
         }
+        return firstFreeCluster;
     }
-
-    public ArrayList<Integer> getClusters() {
-        return clusters;
-    }
-
-    public void deleteUselessCluster(int value) {
-        clusters.remove(value);
-    }
-
 }
