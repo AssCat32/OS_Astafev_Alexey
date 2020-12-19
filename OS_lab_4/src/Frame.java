@@ -67,7 +67,7 @@ public class Frame {
         createFile.setBounds(1050, 50, 120, 30);
         createFile.addActionListener(e -> {
             if (!selectedNode.getAllowsChildren()) {
-                JOptionPane.showMessageDialog(frame, "Некорректное действие (в файл добавлять нельзя)", "Ошибка", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(frame, "РќРµРєРѕСЂСЂРµРєС‚РЅРѕРµ РґРµР№СЃС‚РІРёРµ (РІ С„Р°Р№Р» РґРѕР±Р°РІР»СЏС‚СЊ РЅРµР»СЊР·СЏ)", "РћС€РёР±РєР°", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             File file = fileManager.addFile("file", Integer.parseInt(fileField.getText()));
@@ -77,14 +77,14 @@ public class Frame {
                 tree.updateUI();
                 frame.repaint();
             } else {
-                JOptionPane.showMessageDialog(frame, "Недостаточно места!", "Ошибка", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(frame, "РќРµРґРѕСЃС‚Р°С‚РѕС‡РЅРѕ РјРµСЃС‚Р°!", "РћС€РёР±РєР°", JOptionPane.ERROR_MESSAGE);
             }
         });
         createFolder = new JButton("Create Folder");
         createFolder.setBounds(1050, 130, 120, 30);
         createFolder.addActionListener(e -> {
             if (!selectedNode.getAllowsChildren()) {
-                JOptionPane.showMessageDialog(frame, "Некорректное действие (в файл добавлять нельзя)", "Ошибка", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(frame, "РќРµРєРѕСЂСЂРµРєС‚РЅРѕРµ РґРµР№СЃС‚РІРёРµ (РІ С„Р°Р№Р» РґРѕР±Р°РІР»СЏС‚СЊ РЅРµР»СЊР·СЏ)", "РћС€РёР±РєР°", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             File folder = fileManager.addFolder("folder");
@@ -94,7 +94,7 @@ public class Frame {
                 tree.updateUI();
                 frame.repaint();
             } else {
-                JOptionPane.showMessageDialog(frame, "Недостаточно места!", "Ошибка", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(frame, "РќРµРґРѕСЃС‚Р°С‚РѕС‡РЅРѕ РјРµСЃС‚Р°!", "РћС€РёР±РєР°", JOptionPane.ERROR_MESSAGE);
             }
         });
         deleteObject = new JButton("Delete");
@@ -216,7 +216,7 @@ public class Frame {
             }
             return newNode;
         } else {
-            JOptionPane.showMessageDialog(frame, "Недостаточно места!", "Ошибка", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(frame, "РќРµРґРѕСЃС‚Р°С‚РѕС‡РЅРѕ РјРµСЃС‚Р°!", "РћС€РёР±РєР°", JOptionPane.ERROR_MESSAGE);
             return null;
         }
     }
