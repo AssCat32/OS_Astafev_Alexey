@@ -2,12 +2,12 @@ public class File {
 
     private final int size;
     private final String fileName;
-    private final Cell cell;
+    private final int firstCell;
 
-    public File(String fileName, int size, Cell cell) {
+    public File(String fileName, int size, int firstCell) {
         this.fileName = fileName;
         this.size = size;
-        this.cell = cell;
+        this.firstCell = firstCell;
     }
 
     public int getSize() {
@@ -18,7 +18,7 @@ public class File {
         return fileName;
     }
 
-    public Cell getCell() {
-        return cell;
+    public int getFirstCell() {
+        return firstCell;
     }
 }
