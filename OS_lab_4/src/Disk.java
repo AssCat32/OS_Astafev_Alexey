@@ -28,4 +28,8 @@ public class Disk {
     public int getSizeSector() {
         return sizeSector;
     }
+
+    public Cell getCell(int index){
+        return cells[index];
+    }
 }
