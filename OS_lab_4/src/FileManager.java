@@ -38,7 +38,7 @@ public class FileManager {
     public int selectMemory(int size) {
         size /= disk.getSizeSector();
         int firstCell = -1;
-        FreePlace freePlace = new FreePlace();
+        FreePlaceList freePlace = new FreePlaceList();
 
         if (freePlace.searchFreePlace(disk, size) == -1) {
             return -1;
